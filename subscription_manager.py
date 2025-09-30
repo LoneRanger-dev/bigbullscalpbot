@@ -24,8 +24,8 @@ logger = logging.getLogger(__name__)
 
 # Constants
 TELEGRAM_TOKEN = "8415230764:AAF0Aaqb21Vkq9eWifB_wHDtkm37WrjJRcs"
-RAZORPAY_KEY = "YOUR_RAZORPAY_KEY"  # You'll need to get this from Razorpay
-RAZORPAY_SECRET = "YOUR_RAZORPAY_SECRET"
+RAZORPAY_KEY = "rzp_test_RNyVizHsPGSNQy"
+RAZORPAY_SECRET = "o2XWXVnqsxnN5j08FnIAvO3i"
 
 # Subscription Plans (in INR)
 PLANS = {

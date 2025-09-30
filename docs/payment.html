@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe - BigBullScalpBot</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Choose Your Plan</h1>
+        
+        <div class="pricing-cards">
+            <!-- Trial Plan -->
+            <div class="pricing-card">
+                <h2>Trial Plan</h2>
+                <p class="price">Free</p>
+                <p class="duration">2 Days</p>
+                <ul>
+                    <li>Full Access to Signals</li>
+                    <li>Real-time Updates</li>
+                    <li>Basic Support</li>
+                </ul>
+                <button onclick="startTrial()">Start Free Trial</button>
+            </div>
+
+            <!-- Weekly Plan -->
+            <div class="pricing-card">
+                <h2>Weekly Plan</h2>
+                <p class="price">₹350</p>
+                <p class="duration">7 Days</p>
+                <ul>
+                    <li>Full Access to Signals</li>
+                    <li>Real-time Updates</li>
+                    <li>Priority Support</li>
+                    <li>Performance Reports</li>
+                </ul>
+                <button onclick="subscribe('weekly', 350)">Subscribe Now</button>
+            </div>
+
+            <!-- Monthly Plan -->
+            <div class="pricing-card">
+                <h2>Monthly Plan</h2>
+                <p class="price">₹900</p>
+                <p class="duration">30 Days</p>
+                <ul>
+                    <li>Full Access to Signals</li>
+                    <li>Real-time Updates</li>
+                    <li>Premium Support</li>
+                    <li>Performance Reports</li>
+                    <li>Strategy Insights</li>
+                </ul>
+                <button onclick="subscribe('monthly', 900)">Subscribe Now</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startTrial() {
+            // Redirect to Telegram bot for trial activation
+            window.location.href = 'https://t.me/bigbullscalpbot?start=trial';
+        }
+
+        function subscribe(plan, amount) {
+            var options = {
+                key: 'rzp_test_RNyVizHsPGSNQy',
+                amount: amount * 100, // Amount in paise
+                currency: 'INR',
+                name: 'BigBullScalpBot',
+                description: plan.charAt(0).toUpperCase() + plan.slice(1) + ' Plan Subscription',
+                image: 'https://loneranger-dev.github.io/bigbullscalpbot/logo.png',
+                handler: function(response) {
+                    // After successful payment, redirect to Telegram bot
+                    window.location.href = `https://t.me/bigbullscalpbot?start=payment_${response.razorpay_payment_id}_${plan}`;
+                },
+                prefill: {
+                    name: '',
+                    email: ''
+                },
+                theme: {
+                    color: '#2196F3'
+                }
+            };
+            var rzp = new Razorpay(options);
+            rzp.open();
+        }
+    </script>
+</body>
+</html>
