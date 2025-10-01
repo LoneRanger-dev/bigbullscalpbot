@@ -361,6 +361,99 @@ Disclaimer: Trading involves risk. Past performance doesn't guarantee future res
     
     await query.edit_message_text(text)
 
+# Admin Commands
+async def admin_commands(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Admin commands for testing"""
+    user_id = update.effective_user.id
+    
+    admin_text = f"""
+🔧 **Admin Commands**
+
+Your User ID: `{user_id}`
+
+Available Commands:
+/testsignal - Generate test trading signal
+/activate - Activate your subscription for testing
+/admin - Show this menu
+
+**Quick Setup:**
+1. Use /activate to give yourself free access
+2. Use /testsignal to test signal generation
+3. Check if signals appear in your chat
+
+Bot Status: ✅ Running
+Market Data: ✅ Connected to Kite API
+    """
+    
+    await update.message.reply_text(admin_text, parse_mode='Markdown')
+
+async def test_signal(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Generate a test signal immediately"""
+    try:
+        # Generate a test signal
+        test_signals = trading_bot.generate_signals()
+        
+        if test_signals:
+            for signal in test_signals:
+                message = f"""
+🚨 **TEST SIGNAL** 🚨
+
+📈 **Symbol**: {signal['symbol']}
+🔥 **Type**: {signal['type']}
+💰 **Entry**: ₹{signal['entry']:.2f}
+🎯 **Target**: ₹{signal['target']:.2f}
+🛑 **Stop Loss**: ₹{signal['stop_loss']:.2f}
+
+⏰ **Time**: {signal['timestamp'].strftime('%H:%M:%S')}
+🤖 **Status**: Test Signal Generated
+
+This is a test signal to verify the system is working!
+                """
+                await update.message.reply_text(message, parse_mode='Markdown')
+        else:
+            await update.message.reply_text("No signals generated at this time. Market might be closed or no qualifying movements detected.")
+            
+    except Exception as e:
+        await update.message.reply_text(f"Error generating test signal: {e}")
+
+async def activate_me(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Activate subscription for testing"""
+    user_id = update.effective_user.id
+    username = update.effective_user.username or "TestUser"
+    
+    try:
+        conn = sqlite3.connect('trading_bot.db')
+        cursor = conn.cursor()
+        
+        from datetime import timedelta
+        expires = datetime.now() + timedelta(days=30)
+        
+        cursor.execute('''
+            INSERT OR REPLACE INTO users 
+            (user_id, username, subscription_active, subscription_expires, payment_method) 
+            VALUES (?, ?, ?, ?, ?)
+        ''', (user_id, username, True, expires, 'ADMIN_TEST'))
+        
+        conn.commit()
+        conn.close()
+        
+        await update.message.reply_text(f"""
+✅ **Subscription Activated!**
+
+User ID: {user_id}
+Username: {username}
+Status: ✅ Active
+Expires: {expires.strftime('%Y-%m-%d')}
+Payment: Admin Test
+
+You will now receive all trading signals automatically!
+
+Try /testsignal to generate a test signal.
+        """)
+        
+    except Exception as e:
+        await update.message.reply_text(f"Error activating subscription: {e}")
+
 # Flask routes for Railway
 @app.route('/')
 def home():
@@ -445,6 +538,9 @@ def setup_telegram_bot():
         
         # Add handlers
         telegram_app.add_handler(CommandHandler("start", start))
+        telegram_app.add_handler(CommandHandler("admin", admin_commands))
+        telegram_app.add_handler(CommandHandler("testsignal", test_signal))
+        telegram_app.add_handler(CommandHandler("activate", activate_me))
         telegram_app.add_handler(CallbackQueryHandler(button_handler))
         
         # Start polling in a separate thread
