@@ -1,0 +1,4 @@
+# Heroku Deployment Configuration
+# More reliable than Railway/Render for Python apps
+
+web: python main.py

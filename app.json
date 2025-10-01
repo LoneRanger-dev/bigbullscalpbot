@@ -1,0 +1,49 @@
+{
+  "name": "BigBullScalpBot",
+  "description": "Automated F&O Trading Signals Bot with Payment Integration",
+  "keywords": ["python", "telegram", "trading", "bot"],
+  "website": "https://bigbullscalpbot.com",
+  "repository": "https://github.com/LoneRanger-dev/bigbullscalpbot",
+  "logo": "https://avatars.githubusercontent.com/u/yourusername",
+  "success_url": "/health",
+  "scripts": {
+    "postdeploy": "echo 'BigBullScalpBot deployed successfully!'"
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "env": {
+    "BOT_TOKEN": {
+      "description": "Telegram Bot Token from @BotFather",
+      "required": true
+    },
+    "RAZORPAY_KEY_ID": {
+      "description": "Razorpay Key ID",
+      "required": true
+    },
+    "RAZORPAY_KEY_SECRET": {
+      "description": "Razorpay Key Secret",
+      "required": true
+    },
+    "KITE_API_KEY": {
+      "description": "Kite Connect API Key",
+      "value": "zfz6i2qjh9zjl26m"
+    },
+    "KITE_API_SECRET": {
+      "description": "Kite Connect API Secret",
+      "value": "esdsumpztnzmry8rl1e411b95qt86v2m"
+    },
+    "KITE_ACCESS_TOKEN": {
+      "description": "Kite Connect Access Token",
+      "value": "9tB7VtbqUGu4btfKkX7E4zO6t7wNOtbt"
+    }
+  }
+}
