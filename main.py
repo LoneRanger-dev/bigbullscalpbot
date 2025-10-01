@@ -24,7 +24,8 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # Bot configuration
-BOT_TOKEN = os.getenv('BOT_TOKEN', '8415230764:AAF0Aaqb21Vkq9eWifB_wHDtkm37Wn')
+BOT_TOKEN = os.getenv('BOT_TOKEN', '8415230764:AAF0Aaqb21Vkq9eWifB_wHDtkm37WrjJRcs')
+CHAT_ID = "7973202689"
 UPI_ID = "81285083843@YBL"
 
 # Simple handlers
