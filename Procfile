@@ -1,1 +1,1 @@
-web: python main.py
+web: python webhook_bot.py
